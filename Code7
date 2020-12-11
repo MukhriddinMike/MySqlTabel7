@@ -1,0 +1,163 @@
+select cl_end_datetime, cl_start_datetime as Time_Differ
+from sb_charging_log;
+
+select concat(chgs_addr1, chgs_addr2) from sb_charging_station;
+
+select COUNT(*) from
+(
+select cl_station_id from sb_charging_log
+Union
+select REPLACE(chgs_station_id, '-', '') from sb_charging_station ) sub;
+
+
+SELECT (TIME_TO_SEC(cl_end_datetime) - TIME_TO_SEC(cl_start_datetime))/60  as Time_Differ, concat(chgs_addr1, chgs_addr2) as fullAdd,
+       cl_station_id as Id1, REPLACE(chgs_station_id, '-', '') as Id2   from
+
+        (select cl_station_id, cl_end_datetime, cl_start_datetime,
+               chgs_station_id, chgs_addr1,  chgs_addr2
+        from   sb_charging_log, sb_charging_station)  sub;
+
+
+
+SELECT (TIME_TO_MIN(cl_end_datetime) - TIME_TO_SEC(cl_start_datetime))/60 AS `minutes`
+
+DATE_FORMAT(cl_end_datetime, "%T")
+(TIME_TO_SEC(TIMEONLY2) - TIME_TO_SEC(TIMEONLY1))/60
+TIMEDIFF(TIMEONLY1, TIMEONLY2) as Time_Dif
+
+SELECT TIMEONLY2,TIMEONLY1, concat(chgs_addr1, chgs_addr2) as fullAdd,
+       cl_station_id as Id1, REPLACE(chgs_station_id, '-', '') as Id2   from
+
+        (select cl_station_id, DATE_FORMAT(cl_end_datetime,'%H:%i:%s') TIMEONLY2, DATE_FORMAT(cl_start_datetime,'%H:%i:%s') TIMEONLY1,
+               chgs_station_id, chgs_addr1,  chgs_addr2
+        from   sb_charging_log, sb_charging_station)  sub;
+
+
+
+select  sub2.T1 , sub2.T2 , fullAdd,Id1,Id2
+
+from
+
+(SELECT TIMEONLY2 as T1,(TIMEONLY1) as T2, concat(chgs_addr1, chgs_addr2) as fullAdd,
+       cl_station_id as Id1, REPLACE(chgs_station_id, '-', '') as Id2   from
+
+        (select cl_station_id, cl_end_datetime  TIMEONLY2, cl_start_datetime TIMEONLY1,
+               chgs_station_id, chgs_addr1,  chgs_addr2
+        from   sb_charging_log, sb_charging_station)  sub) sub2;
+
+
+select cl_station_id, cl_end_datetime , cl_start_datetime ,
+               chgs_station_id, chgs_addr1,  chgs_addr2
+        from   sb_charging_station, sb_charging_log;
+
+
+select cl_end_datetime A, cl_start_datetime B
+from sb_charging_log
+UNION
+select chgs_addr1, chgs_addr2 as fullAdd from sb_charging_station;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# select kicc_amount, mem_email
+# from sb_pg_kicc
+# lef;
+#
+# select mem_email, mem_birthday
+# from member;
+#
+# select member.mem_birthday, sb_pg_kicc.kicc_amount, member.mem_sex
+#
+# from sb_pg_kicc
+# left join member on sb_pg_kicc.mem_email = member.mem_email
+# where member.mem_email is not null AND member.mem_birthday is not null AND member.mem_birthday != ''
+# UNION DISTINCT
+# select member.mem_birthday, sb_pg_kicc.kicc_amount, member.mem_sex
+# from sb_pg_kicc
+# right join member on sb_pg_kicc.mem_email = member.mem_email
+# where member.mem_email is not null AND member.mem_birthday is not null
+# ;
+#
+# select sub.mem_birthday, sub.kicc_amount,
+#  case when sub.mem_sex = 2 then 'man' else 'woman' end as 'Gender'
+# from
+#
+# (
+# select member.mem_birthday, sb_pg_kicc.kicc_amount, member.mem_sex
+#
+# from sb_pg_kicc
+# left join member on sb_pg_kicc.mem_email = member.mem_email
+# where member.mem_email is not null AND member.mem_birthday is not null AND member.mem_birthday != ''
+# UNION DISTINCT
+# select member.mem_birthday, sb_pg_kicc.kicc_amount, member.mem_sex
+# from sb_pg_kicc
+# right join member on sb_pg_kicc.mem_email = member.mem_email
+# where member.mem_email is not null AND member.mem_birthday is not null) sub ;
+#
+#
+#
+#
+#
+#
+# #
+# # SELECT COUNT(*) FROM sb_charge_unit_price;
+# # SELECT COUNT(*) FROM sb_charge_unit_price_item;
+# # SELECT COUNT(*) FROM sb_charge_unit_price_item_year;
+# # SELECT COUNT(*) FROM sb_charge_unit_price_year;
+# # SELECT COUNT(*) FROM sb_charger;
+# # SELECT COUNT(*) FROM sb_charger_state;
+# # SELECT COUNT(*) FROM sb_charger_state_log;
+# # SELECT COUNT(*) FROM sb_charging_log;
+# # SELECT COUNT(*) FROM sb_charging_station;
+# # SELECT COUNT(*) FROM sb_charging_station_meta;
+#
+# SELECT
+# concat(substr(sub2.Age,1,1),'0 대') ages, sub2.kicc_amount, sub2.Gender
+#
+# from
+#
+# (select sub.mem_birthday, sub.kicc_amount,
+#  case when sub.mem_sex = 2 then '남' else '여' end as 'Gender',
+#        case when sub.mem_birthday is not null then '2020' - substr(sub.mem_birthday,1,4) end as Age
+#
+# from
+#
+# (
+# select member.mem_birthday, sb_pg_kicc.kicc_amount, member.mem_sex
+#
+# from sb_pg_kicc
+# left join member on sb_pg_kicc.mem_email = member.mem_email
+# where member.mem_email is not null AND member.mem_birthday is not null AND member.mem_birthday != ''
+# UNION DISTINCT
+# select member.mem_birthday, sb_pg_kicc.kicc_amount, member.mem_sex
+# from sb_pg_kicc
+# right join member on sb_pg_kicc.mem_email = member.mem_email
+# where member.mem_email is not null AND member.mem_birthday is not null) sub ) sub2;
+#
+#
+#
+#
+#
+#
+# select mem_address1 from member
+# where mem_address1 != '';
+#
+# select chgs_addr1 from sb_charging_station
+# where chgs_addr1 != ''
+;
